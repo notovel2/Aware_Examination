@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,18 +25,13 @@ class MainActivity : AppCompatActivity() {
         viewAdapter = BlocklistAdapter(data,this)
 
         recyclerView = findViewById<RecyclerView>(R.id.blocklistRecycleView).apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
 
-            // use a linear layout manager
             layoutManager = viewManager
 
-            // specify an viewAdapter (see also next example)
             adapter = viewAdapter
 
         }
-
         addBtn.setOnClickListener {
 
             val phoneText = phoneEditText.text
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun isValidPhoneNumber(phoneText:String):Boolean{
-        var textArray = ArrayList<String>()
+        val textArray = ArrayList<String>()
         var isValid = true
 
         if(phoneText.isNullOrBlank() || phoneText.length != 10 ) {
@@ -64,6 +60,11 @@ class MainActivity : AppCompatActivity() {
             textArray.add("start with 0")
             isValid = false
 
+        }
+
+        if(!TextUtils.isDigitsOnly(phoneText)){
+            textArray.add("contain digit only")
+            isValid = false
         }
 
         if(!isValid) {
